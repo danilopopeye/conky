@@ -1,0 +1,36 @@
+use_xft yes
+xftfont Monaco:size=9
+override_utf8_locale yes
+
+text_buffer_size 2048
+update_interval 1
+total_run_times 0
+double_buffer yes
+no_buffers yes
+net_avg_samples 1
+cpu_avg_samples 1
+
+own_window_class Conky
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+default_color CCCCCC
+draw_shades no
+
+color0 white
+color1 E07A1F
+color2 white
+
+alignment top_left
+gap_x 5
+gap_y 10 
+minimum_size 0 1050
+maximum_width 850
+
+imlib_cache_size 0
+
+TEXT
+${execi 10 ~/.scripts/getRhythmboxLyrics}
+${execi 10 cat /tmp/lyric.txt}

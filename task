@@ -1,0 +1,35 @@
+#!/bin/bash
+#Created by TheSeanKelly and modified by helmuthdu
+#install this program typing:
+#sudo cp ~/.scripts/task /usr/bin
+#sudo chmod +x /usr/bin/task
+#HOW TO USE
+#"task rm <taskname>" to remove, just type first word of the task
+#"task <taskname>" to add
+
+if [ "$1" \= "rm" ]; then
+#	echo $1
+#	echo $2
+	t=`sed -n /$2/p ~/ToDo.txt`
+#	echo "Delete task \""`sed -n /$2/p ~/ToDo.txt`"\"? y/n"
+#	echo $t	
+	if [ "$t" != "" ]; then
+		echo "Delete task \""$t"\"? y/n"
+		read answer
+		if [ $answer \= "y" ]; then
+			sed -i /$2/d ~/ToDo.txt
+			echo "Task deleted."
+		else
+			echo "Task not deleted."
+		fi
+	else
+		echo "No task found with that name."
+	fi
+else
+	if [ "$1" != "" ]; then
+		echo ""$* >> ~/ToDo.txt
+		echo "Successfully added task \"$*\""
+	else
+		echo "No task to add."
+	fi
+fi

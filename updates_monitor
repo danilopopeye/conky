@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#save this file at /etc/init.d/:
+#sudo cp updates_monitor /etc/init.d/
+#sudo chmod +x /etc/init.d/updates_monitor
+#sudo gedit /etc/crontab
+#and add this:
+#10,20,30,40,50,59 * * * * root /etc/init.d/updates_monitor
+#save and reload cron:
+#sudo /etc/init.d/cron reload
+
+logfile="/var/log/upgrades.log"
+list() {
+   apt-get dist-upgrade -s | grep 'Inst'
+   }
+
+count() {
+   wc -l /var/log/upgrades.log
+   }
+
+   apt-get update 2>&1 >/dev/null
+   if [ -z "$(list)" ]; then
+       echo "up-to-date" > $logfile
+       else
+           echo "$(list | sed '/^Inst/!d;{s/Inst\ //;s/\ .*//}')" > $logfile
+           echo "$(count | sed -e 's:/var/log/upgrades.log::')" > $logfile
+           fi
