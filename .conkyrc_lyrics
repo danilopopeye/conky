@@ -32,5 +32,5 @@ maximum_width 850
 imlib_cache_size 0
 
 TEXT
-${execi 10 ~/.scripts/getRhythmboxLyrics}
+${execi 10 ~/.conky/scripts/getRhythmboxLyrics}
 ${execi 10 cat /tmp/lyric.txt}
