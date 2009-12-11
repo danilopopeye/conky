@@ -1,0 +1,53 @@
+#!/usr/bin/php 
+<?php
+require_once('simple_html_dom.php');
+
+function fixArtistName( $name ){
+	return str_replace(" ","-", strtolower( $name ) );
+}
+
+function save( $t ){
+	return file_put_contents( "/tmp/lyric.txt", $t );
+}
+
+$baseUrl = "http://letras.terra.com.br/";
+
+$track = exec('conkyRhythmbox -n -d TI');
+$artist = exec('conkyRhythmbox -n -d AR');
+
+$baseUrl .= fixArtistName( $artist );
+
+$artistPage = @file_get_contents( $baseUrl );
+
+preg_match_all( "/elemsug\"\shref=\"\/[\w-]+\/(\d+)\/\">([^<]+)</i", $artistPage, $matches );
+
+if( !count( $matches ) ){
+	save('Artista nao encontrado :('); exit;
+}
+
+$result = array(
+	'percent' => 666,
+	'key' => ''
+);
+
+foreach( $matches[2] as $k =>  $m ){
+	$l = levenshtein( $track, $m );
+
+	if( $l < $result['percent'] ){
+		$result['percent'] = $l;
+		$result['key'] = $matches[1][ $k ];
+	}
+}
+
+if( $result['percent'] == 666  ){
+	save('Musica nao encontrada :('); exit;
+}
+
+$html = file_get_html( $baseUrl .'/'. $result['key'] );
+
+$text  = $track .' ~ '. $artist ."\n";
+$text .= utf8_encode( $html->find('#div_letra',0)->innertext );
+
+save( str_replace('<p>',"\n", str_replace('</p>',"\n", str_replace( '<br/>',"", $text ) ) ) );
+
+?>

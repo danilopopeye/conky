@@ -1,0 +1,19 @@
+#!/usr/bin/php 
+<?php
+
+$xml = @simplexml_load_file('http://www.rememberthemilk.com/atom/danilopopeye/1920334/?tok=eJwNzEsKwzAMANETGfS15eNIlgyBkATaTW-f7OeNb1SV3DIKlBfqLF6SBjIZ0GbG8m29RMApMKqbYW3t5gql2NKv47yf*6lftfP4fBtOAmZpzjMlKfRVI2uVWX*fIUUxJgR06BTTGfLNhak8MRKMIbYN*gNj0yub');
+
+if( $xml === FALSE ){
+	echo "RSS inválido! :'("; exit;
+}
+
+foreach( $xml->entry as $entry ){
+	$e[] = $entry->title;
+}
+
+if( !count( $e ) ){
+	echo "Nenhuma task encontrada!"; exit;
+}
+
+echo implode("\n",$e);
+?>

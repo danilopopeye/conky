@@ -1,0 +1,38 @@
+#!/usr/bin/php 
+<?php
+# Your API Key is 10d5310ce97a21eb78e222672863a6b3 and your secret is d4016f5040f1657ea1de661c9691411e
+
+$opt = $_SERVER['argv'];
+
+$cover = "/tmp/cover.png";
+$images = array();
+
+$status	= exec('conkyRhythmbox -d ST -n -s 1,1,0');
+$album  = exec('conkyRhythmbox -d AL');
+$artist = exec('conkyRhythmbox -d AR');
+
+if( $status ){
+	$path  = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=10d5310ce97a21eb78e222672863a6b3";
+	$path .= "&artist=". urlencode( $artist ) ."&album=" . urlencode( $album );
+
+	$xml = new SimpleXMLElement( file_get_contents( $path ) );
+
+	if( $xml->attributes()->status != 'ok' ){
+		exit;
+	}
+
+	foreach( $xml->album->image as $image ){
+		$images[] = $image;
+	}
+
+	unlink( $cover );
+
+	file_put_contents( $cover, file_get_contents( array_pop( $images ) ) );
+
+	exec("convert $cover -thumbnail 98x98 $cover");
+	exec("convert ~/.conky/CD/base.png $cover -geometry +19+5 -composite ~/.conky/CD/top.png -geometry +0+0 -composite $cover");
+} else {
+	exec("convert ~/.conky/CD/base.png ~/.conky/CD/top.png -geometry +0+0 -composite $cover");
+}
+
+?>
