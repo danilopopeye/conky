@@ -52,7 +52,7 @@ ${voffset -12}${goto 28}${font Arial Black:size=38}${color2}${time %H}${color}${
 ${voffset -3}${goto 100}${font Liberation Sans:style=Bold:size=8}${color2}${time %A}${color}${font}
 ${voffset -1}${goto 100}${time %d %B %Y}
 ${voffset 4}${font Liberation Sans:style=Bold:size=8}RHYTHMBOX $stippled_hr${font}
-${execi 10 ~/.scripts/lastfmAlbumArt}${execpi 1 ~/.conky/conkyRhythmbox.py -t ~/.conky/conkyPlayer.template}
+${execi 10 ~/.conky/scripts/lastfmAlbumArt}${execpi 1 ~/.conky/conkyRhythmbox.py -t ~/.conky/conkyPlayer.template}
 ${voffset 4}${font Liberation Sans:style=Bold:size=8}HD $stippled_hr${font}
 ${voffset 4}${color0}${font Weather:size=15}y${font}${color}${voffset -2}${goto 32}Temperature: ${font Liberation Sans:style=Bold:size=8}${color1}${execi 120 hddtemp /dev/sda -n --unit=C}°C${color}${font}${alignr}${color2}/dev/sda${color}
 ${execpi 30 ~/.conky/conkyHD1.py}
@@ -88,4 +88,4 @@ ${endif}${else}${if_existing /proc/net/route ppp0}
 ${execpi 10800 ~/.conky/conkyForecast.py --location=BRXX0232 -t ~/.conky/conkyForecast.template}
 ${endif}${else}${voffset 4}${color0}${font PizzaDude Bullets:size=12}4${font}${color}${goto 32}Weather Unavailable${endif}${endif}
 ${voffset -8}${font Liberation Sans:style=Bold:size=8}REMEMBER THE MiLK $stippled_hr${font}
-${font Poky:size=14}e${font}${goto 32}${voffset -10}${color2}${execi 300 ~/.scripts/rtmFazer}${color}
+${font Poky:size=14}e${font}${goto 32}${voffset -10}${color2}${execi 300 ~/.conky/scripts/rtmFazer}${color}
